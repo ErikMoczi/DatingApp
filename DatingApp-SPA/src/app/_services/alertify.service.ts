@@ -5,7 +5,7 @@ declare let alertify: any;
 @Injectable({
   providedIn: 'root'
 })
-export class AlertifyjsService {
+export class AlertifyService {
 
   constructor() {
   }
