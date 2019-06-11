@@ -12,16 +12,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DatingApp.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly IAuthRepository _repository;
         private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthRepository authRepository, IConfiguration configuration)
+        public AuthController(IAuthRepository repository, IConfiguration configuration)
         {
-            _authRepository = authRepository;
+            _repository = repository;
             _configuration = configuration;
         }
 
@@ -29,7 +29,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
-            if (await _authRepository.UserExists(userForRegisterDto.Username))
+            if (await _repository.UserExists(userForRegisterDto.Username))
             {
                 return BadRequest("Username already exists");
             }
@@ -39,7 +39,7 @@ namespace DatingApp.API.Controllers
                 Username = userForRegisterDto.Username
             };
 
-            var cteatedUser = await _authRepository.Register(userToCreate, userForRegisterDto.Password);
+            var cteatedUser = await _repository.Register(userToCreate, userForRegisterDto.Password);
 
             return StatusCode(201);
         }
@@ -47,7 +47,7 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var user = await _authRepository.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
+            var user = await _repository.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if (user == null)
             {
                 return Unauthorized();
