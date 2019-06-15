@@ -36,6 +36,7 @@ namespace DatingApp.API
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 );
             services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
 //            AutoMapper.ServiceCollectionExtensions.UseStaticRegistration = false;
             services.AddAutoMapper();
             services.AddTransient<Seed>();
