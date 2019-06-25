@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using AutoMapper;
 using DatingApp.API.Data;
@@ -91,7 +91,14 @@ namespace DatingApp.API
 //            seed.SeedUsers();
             app.UseCors(x => x.WithOrigins("http://localhost:4200").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseMvc(
+                builder => builder.MapSpaFallbackRoute(
+                    "spa-fallback",
+                    new {controller = "FallBack", action = "Index"}
+                )
+            );
         }
     }
 }
